@@ -1,0 +1,23 @@
+20260424-10:32:28.883: Session FIX.4.4:VENUE->TRADER schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260424-10:32:28.883: Created session: FIX.4.4:VENUE->TRADER
+20260424-10:32:31.163: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:56272
+20260424-10:32:31.163: Acceptor heartbeat set to 5 seconds
+20260424-10:32:31.165: Received logon
+20260424-10:32:31.166: Responding to Logon request
+20260424-10:32:44.885: Sent test request TEST
+20260424-10:32:49.884: Disconnecting: Timed out waiting for heartbeat
+20260424-10:32:50.260: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:45692
+20260424-10:32:50.260: Acceptor heartbeat set to 5 seconds
+20260424-10:32:50.261: Received logon
+20260424-10:32:50.261: Responding to Logon request
+20260424-10:32:50.261: MsgSeqNum too high, expecting 26 but received 27: 8=FIX.4.49=6635=A34=2749=TRADER52=20260424-10:32:50.25956=VENUE98=0108=510=080
+20260424-10:32:50.261: Enqueued at pos 27: 8=FIX.4.49=6635=A34=2749=TRADER52=20260424-10:32:50.25956=VENUE98=0108=510=080
+20260424-10:32:50.262: Sent ResendRequest FROM: 26 TO: infinity
+20260424-10:32:50.263: Enqueued at pos 28: 8=FIX.4.49=6535=234=2849=TRADER52=20260424-10:32:50.26256=VENUE7=2616=010=002
+20260424-10:32:50.263: Received ResendRequest FROM: 26 TO: infinity
+20260424-10:32:50.264: Sent SequenceReset TO: 31
+20260424-10:32:50.265: ResendRequest for messages FROM 26 TO 26 has been satisfied.
+20260424-10:32:50.265: Received SequenceReset FROM: 26 TO: 29
+20260424-10:33:02.074: Received logout request
+20260424-10:33:02.074: Sent logout response
+20260424-10:33:02.074: Disconnecting: Received logout request

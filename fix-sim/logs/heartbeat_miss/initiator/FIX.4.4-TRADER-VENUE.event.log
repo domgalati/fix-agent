@@ -1,0 +1,23 @@
+20260424-10:32:30.051: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260424-10:32:30.051: Created session: FIX.4.4:TRADER->VENUE
+20260424-10:32:30.071: Configured socket addresses for session: [/127.0.0.1:9876]
+20260424-10:32:30.095: MINA session created: local=/127.0.0.1:56272, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260424-10:32:31.119: Initiated logon request
+20260424-10:32:31.173: Received logon
+20260424-10:32:39.073: Sent test request TEST
+20260424-10:32:44.072: Disconnecting: Timed out waiting for heartbeat
+20260424-10:32:48.133: Pending connection not established after 4001 ms.
+20260424-10:32:50.259: MINA session created: local=/127.0.0.1:45692, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260424-10:32:50.260: Initiated logon request
+20260424-10:32:50.262: Received logon
+20260424-10:32:50.262: MsgSeqNum too high, expecting 26 but received 29: 8=FIX.4.49=6635=A34=2949=VENUE52=20260424-10:32:50.26156=TRADER98=0108=510=075
+20260424-10:32:50.262: Enqueued at pos 29: 8=FIX.4.49=6635=A34=2949=VENUE52=20260424-10:32:50.26156=TRADER98=0108=510=075
+20260424-10:32:50.263: Sent ResendRequest FROM: 26 TO: infinity
+20260424-10:32:50.263: Enqueued at pos 30: 8=FIX.4.49=6535=234=3049=VENUE52=20260424-10:32:50.26256=TRADER7=2616=010=251
+20260424-10:32:50.263: Received ResendRequest FROM: 26 TO: infinity
+20260424-10:32:50.263: Sent SequenceReset TO: 29
+20260424-10:32:50.265: Received SequenceReset FROM: 26 TO: 31
+20260424-10:32:55.886: ResendRequest for messages FROM 26 TO 28 has been satisfied.
+20260424-10:33:02.072: Initiated logout request
+20260424-10:33:02.075: Received logout response
+20260424-10:33:02.075: Disconnecting: Received logout response

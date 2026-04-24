@@ -1,0 +1,9 @@
+20260424-10:20:38.533: Session FIX.4.4:VENUE->TRADER schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260424-10:20:38.533: Created session: FIX.4.4:VENUE->TRADER
+20260424-10:20:40.820: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:46038
+20260424-10:20:40.820: Acceptor heartbeat set to 30 seconds
+20260424-10:20:40.823: Received logon
+20260424-10:20:40.824: Responding to Logon request
+20260424-10:21:01.727: Received logout request
+20260424-10:21:01.728: Sent logout response
+20260424-10:21:01.728: Disconnecting: Received logout request
