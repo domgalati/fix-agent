@@ -1,0 +1,38 @@
+20260428-06:00:57.762: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:00:57.762: Created session: FIX.4.4:TRADER->VENUE
+20260428-06:00:57.783: Configured socket addresses for session: [/127.0.0.1:9876]
+20260428-06:00:57.810: MINA session created: local=/127.0.0.1:34718, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260428-06:00:58.832: Initiated logon request
+20260428-06:00:58.893: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:00:58.894: Received logon
+20260428-06:01:03.041: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:01:03.041: Created session: FIX.4.4:TRADER->VENUE
+20260428-06:01:03.062: Configured socket addresses for session: [/127.0.0.1:9876]
+20260428-06:01:03.085: MINA session created: local=/127.0.0.1:35842, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260428-06:01:04.109: Initiated logon request
+20260428-06:01:04.117: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:01:04.117: Received logon
+20260428-06:01:08.341: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:01:08.341: Created session: FIX.4.4:TRADER->VENUE
+20260428-06:01:08.361: Configured socket addresses for session: [/127.0.0.1:9876]
+20260428-06:01:08.385: MINA session created: local=/127.0.0.1:35846, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260428-06:01:09.412: Initiated logon request
+20260428-06:01:09.420: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:01:09.420: Received logon
+20260428-06:01:13.624: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:01:13.624: Created session: FIX.4.4:TRADER->VENUE
+20260428-06:01:13.645: Configured socket addresses for session: [/127.0.0.1:9876]
+20260428-06:01:13.669: MINA session created: local=/127.0.0.1:46350, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260428-06:01:14.687: Initiated logon request
+20260428-06:01:14.695: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:01:14.696: Received logon
+20260428-06:01:18.911: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:01:18.912: Created session: FIX.4.4:TRADER->VENUE
+20260428-06:01:18.935: Configured socket addresses for session: [/127.0.0.1:9876]
+20260428-06:01:18.959: MINA session created: local=/127.0.0.1:59946, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260428-06:01:19.980: Initiated logon request
+20260428-06:01:19.989: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:01:19.990: Received logon
+20260428-06:01:22.936: Initiated logout request
+20260428-06:01:22.939: Received logout response
+20260428-06:01:22.940: Disconnecting: Received logout response

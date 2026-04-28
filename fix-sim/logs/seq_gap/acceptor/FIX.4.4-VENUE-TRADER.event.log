@@ -1,0 +1,21 @@
+20260428-06:00:44.716: Session FIX.4.4:VENUE->TRADER schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:00:44.716: Created session: FIX.4.4:VENUE->TRADER
+20260428-06:00:47.005: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:39406
+20260428-06:00:47.005: Acceptor heartbeat set to 30 seconds
+20260428-06:00:47.007: Received logon
+20260428-06:00:47.008: Responding to Logon request
+20260428-06:00:47.918: Received logout request
+20260428-06:00:47.918: Sent logout response
+20260428-06:00:47.918: Disconnecting: Received logout request
+20260428-06:00:49.626: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:34704
+20260428-06:00:49.626: Acceptor heartbeat set to 30 seconds
+20260428-06:00:49.627: Received logon
+20260428-06:00:49.627: Responding to Logon request
+20260428-06:00:49.627: MsgSeqNum too high, expecting 4 but received 9: 8=FIX.4.49=6635=A34=949=TRADER52=20260428-06:00:49.62156=VENUE98=0108=3010=083
+20260428-06:00:49.628: Enqueued at pos 9: 8=FIX.4.49=6635=A34=949=TRADER52=20260428-06:00:49.62156=VENUE98=0108=3010=083
+20260428-06:00:49.629: Sent ResendRequest FROM: 4 TO: infinity
+20260428-06:00:49.638: Received SequenceReset FROM: 4 TO: 10
+20260428-06:00:49.669: ResendRequest for messages FROM 4 TO 8 has been satisfied.
+20260428-06:00:50.586: Received logout request
+20260428-06:00:50.587: Sent logout response
+20260428-06:00:50.587: Disconnecting: Received logout request

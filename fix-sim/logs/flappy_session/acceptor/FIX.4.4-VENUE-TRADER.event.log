@@ -1,0 +1,34 @@
+20260428-06:00:56.588: Session FIX.4.4:VENUE->TRADER schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:00:56.588: Created session: FIX.4.4:VENUE->TRADER
+20260428-06:00:58.882: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:34718
+20260428-06:00:58.882: Acceptor heartbeat set to 30 seconds
+20260428-06:00:58.884: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:00:58.886: Received logon
+20260428-06:00:58.887: Responding to Logon request
+20260428-06:01:00.443: Disconnecting: Encountered END_OF_STREAM
+20260428-06:01:04.111: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:35842
+20260428-06:01:04.111: Acceptor heartbeat set to 30 seconds
+20260428-06:01:04.112: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:01:04.113: Received logon
+20260428-06:01:04.113: Responding to Logon request
+20260428-06:01:05.717: Disconnecting: Encountered END_OF_STREAM
+20260428-06:01:09.414: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:35846
+20260428-06:01:09.414: Acceptor heartbeat set to 30 seconds
+20260428-06:01:09.414: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:01:09.416: Received logon
+20260428-06:01:09.416: Responding to Logon request
+20260428-06:01:10.999: Disconnecting: Encountered END_OF_STREAM
+20260428-06:01:14.689: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:46350
+20260428-06:01:14.689: Acceptor heartbeat set to 30 seconds
+20260428-06:01:14.689: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:01:14.691: Received logon
+20260428-06:01:14.691: Responding to Logon request
+20260428-06:01:16.290: Disconnecting: Encountered END_OF_STREAM
+20260428-06:01:19.982: Accepting session FIX.4.4:VENUE->TRADER from /127.0.0.1:59946
+20260428-06:01:19.982: Acceptor heartbeat set to 30 seconds
+20260428-06:01:19.983: Logon contains ResetSeqNumFlag=Y, resetting sequence numbers to 1
+20260428-06:01:19.984: Received logon
+20260428-06:01:19.984: Responding to Logon request
+20260428-06:01:22.938: Received logout request
+20260428-06:01:22.939: Sent logout response
+20260428-06:01:22.939: Disconnecting: Received logout request

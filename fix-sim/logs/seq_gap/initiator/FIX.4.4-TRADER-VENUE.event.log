@@ -1,0 +1,20 @@
+20260428-06:00:45.894: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:00:45.894: Created session: FIX.4.4:TRADER->VENUE
+20260428-06:00:45.915: Configured socket addresses for session: [/127.0.0.1:9876]
+20260428-06:00:45.941: MINA session created: local=/127.0.0.1:39406, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260428-06:00:46.964: Initiated logon request
+20260428-06:00:47.015: Received logon
+20260428-06:00:47.916: Initiated logout request
+20260428-06:00:47.919: Received logout response
+20260428-06:00:47.919: Disconnecting: Received logout response
+20260428-06:00:48.557: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260428-06:00:48.558: Created session: FIX.4.4:TRADER->VENUE
+20260428-06:00:48.584: Configured socket addresses for session: [/127.0.0.1:9876]
+20260428-06:00:48.611: MINA session created: local=/127.0.0.1:34704, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260428-06:00:49.625: Initiated logon request
+20260428-06:00:49.634: Received logon
+20260428-06:00:49.635: Received ResendRequest FROM: 4 TO: infinity
+20260428-06:00:49.637: Sent SequenceReset TO: 10
+20260428-06:00:50.584: Initiated logout request
+20260428-06:00:50.588: Received logout response
+20260428-06:00:50.588: Disconnecting: Received logout response
