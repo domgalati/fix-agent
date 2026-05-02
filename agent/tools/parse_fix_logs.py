@@ -248,11 +248,11 @@ def _iter_message_log_files(logs_root: Path) -> Iterable[Path]:
     """
     Prefer QuickFIX/J message logs, but fall back to any *.log if needed.
     """
-    msg_logs = sorted(logs_root.rglob("*.messages.log"))
+    msg_logs = sorted(logs_root.rglob("initiator/**/*.messages.log"))
     if msg_logs:
         yield from msg_logs
         return
-    yield from sorted(logs_root.rglob("*.log"))
+    yield from sorted(logs_root.rglob("initiator/**/*.log"))
 
 
 def _select_logs_root(repo_root: Path) -> Path:
@@ -348,7 +348,12 @@ def main() -> int:
                     except ValueError:
                         seq_num = None
 
-                    session = "|".join([tags.get("8", ""), tags.get("49", ""), tags.get("56", "")])
+                    # Session tuple should reflect the *local* perspective encoded by the log file name
+                    # (e.g. FIX.4.4|TRADER|VENUE), not flip based on message header tags (49/56) for inbound traffic.
+                    if ctx.local_begin and ctx.local_sender and ctx.local_target:
+                        session = f"{ctx.local_begin}|{ctx.local_sender}|{ctx.local_target}"
+                    else:
+                        session = "|".join([tags.get("8", ""), tags.get("49", ""), tags.get("56", "")])
 
                     obj = {
                         "ts": ts_iso,

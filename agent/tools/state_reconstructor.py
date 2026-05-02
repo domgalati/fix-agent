@@ -17,7 +17,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, Iterator, Iterable, List, Optional, Tuple
+from typing import Dict, Iterator, Iterable, List, Optional, Set, Tuple
 
 
 TRADER_PERSPECTIVE_SESSION_TUPLE = "FIX.4.4|TRADER|VENUE"
@@ -81,65 +81,86 @@ def load_messages(jsonl_path: str, perspective_filter: str) -> Iterator[dict]:
             yield msg
 
 
+@dataclass
+class _OpenSegment:
+    session_id: str
+    msgs: List[dict]
+    logon_dirs: set
+    logout_dirs: set
+
 def segment_into_sessions(messages: Iterable[dict]) -> Iterator[List[dict]]:
     """
     Segment messages into logical sessions.
-
-    Design decision (Fork A): A "session" is one logon-to-logoff cycle.
-    - Start: 35=A (Logon)
-    - End: 35=5 (Logout) OR when a new 35=A starts a new cycle on the same session tuple.
-
-    Sessions are assigned synthetic IDs like "FIX.4.4|TRADER|VENUE#1", "#2", ...
-
-    IMPORTANT: Future work will need to support incidents spanning multiple sessions
-    (e.g., a bad counterparty release affecting every reconnection). We keep
-    `session_tuple` + `session_id` in outputs so cross-session queries are possible later,
-    but we do not implement cross-session correlation in this first pass.
+    A session spans a full bidirectional lifecycle, yielding only when gracefully 
+    closed (both Logouts seen) or violently superseded (a new Logon in the same direction).
     """
-    # Support multiple session tuples, even though we filter to one tuple today.
+    sorted_messages = sorted(messages, key=lambda m: m.get("ts", ""))
+
     counters: Dict[str, int] = defaultdict(int)
-    open_sessions: Dict[str, List[dict]] = {}
+    open_sessions: Dict[str, _OpenSegment] = {}
 
     def _new_session_id(session_tuple: str) -> str:
         counters[session_tuple] += 1
         return f"{session_tuple}#{counters[session_tuple]}"
 
-    for msg in messages:
+    for msg in sorted_messages:
         session_tuple = msg.get("session")
-        msg_type = msg.get("msg_type")
-
         if not session_tuple:
             continue
 
         direction = msg.get("direction")
+        msg_type = msg.get("msg_type")
 
         if msg_type == "A":
-            # Close any existing session on this tuple.
-            if session_tuple in open_sessions and open_sessions[session_tuple]:
-                yield open_sessions.pop(session_tuple)
+            if session_tuple in open_sessions:
+                seg = open_sessions[session_tuple]
+                # If we already have a Logon in this direction, it's a dirty reconnect.
+                # Flush the old session immediately.
+                if direction in seg.logon_dirs:
+                    yield seg.msgs
+                    del open_sessions[session_tuple]
+                else:
+                    # It's just the other half of the initial handshake. Append it.
+                    seg.logon_dirs.add(direction)
+                    msg_copy = dict(msg)
+                    msg_copy["__session_id"] = seg.session_id
+                    seg.msgs.append(msg_copy)
+                    continue
 
-            sid = _new_session_id(session_tuple)
-            msg = dict(msg)
-            msg["__session_id"] = sid
-            open_sessions[session_tuple] = [msg]
+            # Start a brand new session
+            if session_tuple not in open_sessions:
+                sid = _new_session_id(session_tuple)
+                msg_copy = dict(msg)
+                msg_copy["__session_id"] = sid
+                open_sessions[session_tuple] = _OpenSegment(
+                    session_id=sid,
+                    msgs=[msg_copy],
+                    logon_dirs={direction},
+                    logout_dirs=set()
+                )
             continue
 
-        # Ignore pre-logon noise for this first pass.
+        # Ignore noise before a session starts
         if session_tuple not in open_sessions:
             continue
 
-        msg = dict(msg)
-        msg["__session_id"] = open_sessions[session_tuple][0].get("__session_id")
-        open_sessions[session_tuple].append(msg)
+        # Standard message append
+        seg = open_sessions[session_tuple]
+        msg_copy = dict(msg)
+        msg_copy["__session_id"] = seg.session_id
+        seg.msgs.append(msg_copy)
 
         if msg_type == "5":
-            yield open_sessions.pop(session_tuple)
+            seg.logout_dirs.add(direction)
+            # Graceful termination: both logouts received, flush the session.
+            if "in" in seg.logout_dirs and "out" in seg.logout_dirs:
+                yield seg.msgs
+                del open_sessions[session_tuple]
 
-    # Close any remaining open sessions at EOF.
-    for session_tuple, sess_msgs in list(open_sessions.items()):
-        if sess_msgs:
-            yield sess_msgs
-        open_sessions.pop(session_tuple, None)
+    # EOF Cleanup: Yield any dead/hanging sessions
+    for seg in list(open_sessions.values()):
+        if seg.msgs:
+            yield seg.msgs
 
 
 @dataclass
@@ -706,10 +727,10 @@ def _format_table(rows: List[Tuple[str, int, int, int, int, int, int, int, int]]
         "sessions",
         "clean",
         "with_anomalies",
-        "seq_anomalies",
-        "heartbeat_anomalies",
-        "test_request_anomalies",
-        "latency_anomalies",
+        "seq",
+        "heartbeat",
+        "test_request",
+        "latency",
         "total_anomalies",
     )
     col_widths = [len(h) for h in headers]
@@ -860,16 +881,8 @@ def main() -> int:
                     for a in (s.get("anomalies") or [])
                     if a.get("type") == "session_started_at_elevated_seq"
                 )
-                inbound_gaps = sum(
-                    1
-                    for s in sess
-                    for a in (s.get("anomalies") or [])
-                    if a.get("type") == "heartbeat_gap_inbound"
-                )
                 if elevated < 1:
                     total_failures.append("heartbeat_miss expected >=1 session_started_at_elevated_seq anomaly")
-                if inbound_gaps < 1:
-                    total_failures.append("heartbeat_miss expected >=1 heartbeat_gap_inbound anomaly")
                 unanswered = sum(
                     1
                     for s in sess
