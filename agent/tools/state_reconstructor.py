@@ -613,37 +613,86 @@ def detect_timestamp_latency_anomalies(messages: List[dict]) -> List[dict]:
     baseline_stdev = statistics.stdev(baseline_samples)
     baseline_stdev = max(baseline_stdev, 0.001)
 
-    anomalies: List[dict] = []
+    # Collect all outliers first (keep sessions.jsonl compact by summarizing beyond a few examples).
+    outliers: List[Tuple[str, float, float, Optional[str], Optional[int]]] = []
     for msg, latency_sec in inbound_latencies[3:]:
         z_score = (latency_sec - baseline_mean) / baseline_stdev
         if abs(z_score) <= 3.0:
             continue
-
-        note = (
-            "Inbound message latency exceeds 3-sigma vs session baseline; "
-            "possible network degradation or clock drift"
-        )
-        if len(anomalies) == 4:
-            note += " (further outliers in session not reported)"
-
-        anomalies.append(
-            {
-                "type": "elevated_inbound_latency",
-                "detected_ts": msg.get("ts"),
-                "latency_sec": round(latency_sec, 6),
-                "baseline_mean_sec": round(baseline_mean, 6),
-                "baseline_stdev_sec": round(baseline_stdev, 6),
-                "z_score": round(z_score, 2),
-                "msg_type": msg.get("msg_type"),
-                "seq_num": msg.get("seq_num"),
-                "note": note,
-            }
+        outliers.append(
+            (
+                str(msg.get("ts")),
+                float(latency_sec),
+                float(z_score),
+                msg.get("msg_type"),
+                msg.get("seq_num") if isinstance(msg.get("seq_num"), int) else None,
+            )
         )
 
-        if len(anomalies) >= 5:
-            break
+    if not outliers:
+        return []
 
-    return anomalies
+    def _full_anomaly(ts: str, latency_sec: float, z_score: float, msg_type: Optional[str], seq_num: Optional[int]) -> dict:
+        return {
+            "type": "elevated_inbound_latency",
+            "detected_ts": ts,
+            "latency_sec": round(latency_sec, 6),
+            "baseline_mean_sec": round(baseline_mean, 6),
+            "baseline_stdev_sec": round(baseline_stdev, 6),
+            "z_score": round(z_score, 2),
+            "msg_type": msg_type,
+            "seq_num": seq_num,
+            "note": (
+                "Inbound message latency exceeds 3-sigma vs session baseline; "
+                "possible network degradation or clock drift"
+            ),
+        }
+
+    # Emit up to 4 full examples, then a 5th compact summary for all outliers in the session.
+    if len(outliers) <= 4:
+        return [_full_anomaly(*o) for o in outliers]
+
+    examples = [_full_anomaly(*o) for o in outliers[:4]]
+
+    # Summary metadata for *all* outliers in the session.
+    lats = sorted(lat for _, lat, _, _, _ in outliers)
+    zs = [z for _, _, z, _, _ in outliers]
+    msg_type_counts = Counter(mt for _, _, _, mt, _ in outliers if mt)
+    seqs = [s for _, _, _, _, s in outliers if s is not None]
+
+    def _pct(sorted_vals: List[float], p: float) -> float:
+        if not sorted_vals:
+            return 0.0
+        # Nearest-rank percentile, 1-indexed ranks.
+        n = len(sorted_vals)
+        k = int((p * n) + (0 if (p * n).is_integer() else 1))
+        k = max(1, min(n, k))
+        return float(sorted_vals[k - 1])
+
+    summary = {
+        "type": "elevated_inbound_latency_summary",
+        "detected_ts": outliers[4][0],
+        "total_outliers": len(outliers),
+        "suppressed_outliers": len(outliers) - 4,
+        "baseline_mean_sec": round(baseline_mean, 6),
+        "baseline_stdev_sec": round(baseline_stdev, 6),
+        "first_outlier_ts": outliers[0][0],
+        "last_outlier_ts": outliers[-1][0],
+        "latency_sec_min": round(lats[0], 6),
+        "latency_sec_p50": round(_pct(lats, 0.50), 6),
+        "latency_sec_p95": round(_pct(lats, 0.95), 6),
+        "latency_sec_max": round(lats[-1], 6),
+        "z_score_max": round(max(zs), 2),
+        "msg_type_counts": dict(msg_type_counts),
+        "seq_num_first": min(seqs) if seqs else None,
+        "seq_num_last": max(seqs) if seqs else None,
+        "note": (
+            "Session contains more than 4 inbound-latency outliers; emitting 4 examples plus this summary "
+            "to keep sessions.jsonl compact"
+        ),
+    }
+
+    return examples + [summary]
 
 
 def reconstruct_session(messages: List[dict]) -> dict:
@@ -808,7 +857,7 @@ def main() -> int:
             "slow_test_request_response_inbound",
             "slow_test_request_response_outbound",
         }
-        latency_types = {"elevated_inbound_latency"}
+        latency_types = {"elevated_inbound_latency", "elevated_inbound_latency_summary"}
 
         for scenario in sorted(by_scenario.keys()):
             sess = by_scenario[scenario]

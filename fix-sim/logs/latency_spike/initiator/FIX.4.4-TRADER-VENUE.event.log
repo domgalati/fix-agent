@@ -1,0 +1,9 @@
+20260505-07:38:49.049: Session FIX.4.4:TRADER->VENUE schedule is daily, 00:00:00-UTC - 23:59:59-UTC
+20260505-07:38:49.050: Created session: FIX.4.4:TRADER->VENUE
+20260505-07:38:49.072: Configured socket addresses for session: [/127.0.0.1:9876]
+20260505-07:38:49.101: MINA session created: local=/127.0.0.1:34632, class org.apache.mina.transport.socket.nio.NioSocketSession, remote=localhost/127.0.0.1:9876
+20260505-07:38:50.122: Initiated logon request
+20260505-07:38:50.178: Received logon
+20260505-07:41:56.073: Initiated logout request
+20260505-07:41:56.075: Received logout response
+20260505-07:41:56.076: Disconnecting: Received logout response
