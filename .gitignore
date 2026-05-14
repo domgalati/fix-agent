@@ -32,6 +32,9 @@ fix-sim/quickfixj/
 fix-sim/.m2/copy_reference_file.log
 fix-sim/.m2/repository/
 
+# scrapped first investigator and outputs
+first-investigator/*
+
 # OS / editor
 .DS_Store
 Thumbs.db
